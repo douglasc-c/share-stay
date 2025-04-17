@@ -21,6 +21,44 @@ export class PrismaAssetsRepository implements AssetsRepository {
     return asset
   }
 
+  async findByIdWithRelations(id: string) {
+    const asset = await prisma.asset.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        addresses: true,
+        seasons: true,
+        shares: {
+          include: {
+            users: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                  }
+                }
+              }
+            }
+          }
+        },
+        users: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          }
+        }
+      }
+    })
+
+    return asset
+  }
+
   async findMany(): Promise<Asset[]> {
     const assets = await prisma.asset.findMany()
     return assets

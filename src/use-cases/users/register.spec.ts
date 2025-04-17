@@ -2,7 +2,7 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-user
 import { compare } from 'bcryptjs'
 import { expect, describe, it, beforeEach } from 'vitest'
 import { RegisterUseCase } from './register'
-import { UserAlreadyExistsError } from './errors/user-already-exists'
+import { UserAlreadyExistsError } from '../errors/user-already-exists'
 
 let usersRepository: InMemoryUsersRepository
 let sut: RegisterUseCase
@@ -15,9 +15,13 @@ describe('Register Use Case', () => {
 
   it('should be able to register', async () => {
     const { user } = await sut.execute({
-      name: ' Jonh Doe',
+      firstName: ' Jonh',
+      lastName: 'Doe',
       email: 'jonh.doe@example.com',
-      password: 'password',
+      password: 'password', 
+      document_type: 'CPF',
+      document_number: '12345678901',
+      phone: '12345678901',
     })
 
     expect(user.id).toEqual(expect.any(String))
@@ -25,9 +29,13 @@ describe('Register Use Case', () => {
 
   it('should register user password upon registration', async () => {
     const { user } = await sut.execute({
-      name: ' Jonh Doe',
+      firstName: ' Jonh',
+      lastName: 'Doe',
       email: 'jonh.doe@example.com',
       password: 'password',
+      document_type: 'CPF',
+      document_number: '12345678901',
+      phone: '12345678901',
     })
 
     const isPasswordCorrectlyHashed = await compare(
@@ -42,16 +50,24 @@ describe('Register Use Case', () => {
     const email = 'jonhdoe@example.com'
 
     await sut.execute({
-      name: ' Jonh Doe',
+      firstName: ' Jonh',
+      lastName: 'Doe',
       email,
       password: 'password',
+      document_type: 'CPF',
+      document_number: '12345678901',
+      phone: '12345678901',
     })
 
-    await expect(() =>
+      await expect(() =>
       sut.execute({
-        name: ' Jonh Doe',
+        firstName: ' Jonh',
+        lastName: 'Doe',
         email,
         password: 'password',
+        document_type: 'CPF',
+        document_number: '12345678901',
+        phone: '12345678901',
       }),
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })

@@ -1,9 +1,13 @@
-import { Asset, Prisma } from '@prisma/client'
+import { Asset } from '@prisma/client'
+import { AssetsRepository } from '@/repositories/assets-repository'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 
-export interface AssetsRepository {
-  create(data: Prisma.AssetCreateInput): Promise<Asset>
-  findById(id: string): Promise<Asset | null>
-  findByIdWithRelations(id: string): Promise<(Asset & {
+interface GetAssetByIdUseCaseRequest {
+  assetId: string
+}
+
+interface GetAssetByIdUseCaseResponse {
+  asset: Asset & {
     addresses: {
       id: string
       street: string
@@ -42,8 +46,23 @@ export interface AssetsRepository {
       lastName: string
       email: string
     }[]
-  }) | null>
-  findMany(): Promise<Asset[]>
-  update(id: string, data: Prisma.AssetUpdateInput): Promise<Asset>
-  delete(id: string): Promise<void>
+  }
+}
+
+export class GetAssetByIdUseCase {
+  constructor(
+    private assetsRepository: AssetsRepository,
+  ) {}
+
+  async execute({
+    assetId,
+  }: GetAssetByIdUseCaseRequest): Promise<GetAssetByIdUseCaseResponse> {
+    const asset = await this.assetsRepository.findByIdWithRelations(assetId)
+
+    if (!asset) {
+      throw new ResourceNotFoundError('Asset não encontrado')
+    }
+
+    return { asset }
+  }
 } 

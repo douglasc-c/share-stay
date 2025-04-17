@@ -70,6 +70,15 @@ export class CreateShareUseCase {
       }
     })
 
+    // Associar o usuário ao asset (relação direta)
+    await this.assetsRepository.update(assetId, {
+      users: {
+        connect: {
+          id: userId
+        }
+      }
+    })
+
     return { share }
   }
 } 

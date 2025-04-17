@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { makeSearchAssetsUseCase } from '../../../use-cases/factories/make-search-assets-use-case'
+import { makeSearchAssetsUseCase } from '@/use-cases/factories/assets/make-search-assets-use-case'
 
 export async function search(request: FastifyRequest, reply: FastifyReply) {
   const searchAssetsUseCase = makeSearchAssetsUseCase()

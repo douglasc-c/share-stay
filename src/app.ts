@@ -1,4 +1,6 @@
 import fastifyJwt from '@fastify/jwt'
+import fastifyCookie from '@fastify/cookie'
+import fastifySession from '@fastify/session'
 import fastify from 'fastify'
 
 import { ZodError } from 'zod'
@@ -8,6 +10,11 @@ import { appRoutes } from './http/routes'
 export const app = fastify()
 
 app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+})
+
+app.register(fastifyCookie)
+app.register(fastifySession, {
   secret: env.JWT_SECRET,
 })
 

@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { makeTransferShareUseCase } from '@/use-cases/factories/make-transfer-share-use-case'
+import { makeTransferShareUseCase } from '@/use-cases/factories/shares/make-transfer-share-use-case'
 
 export async function transfer(request: FastifyRequest, reply: FastifyReply) {
   const transferShareParamsSchema = z.object({

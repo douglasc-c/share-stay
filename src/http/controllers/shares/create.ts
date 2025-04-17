@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { makeCreateShareUseCase } from '@/use-cases/factories/make-create-share-use-case'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import { MaxSharesExceededError } from '@/use-cases/errors/max-shares-exceeded-error'
+import { makeCreateShareUseCase } from '@/use-cases/factories/shares/make-create-share-use-case'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createShareBodySchema = z.object({
