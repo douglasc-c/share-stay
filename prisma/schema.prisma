@@ -10,12 +10,125 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Enum para tipo de bem
+enum AssetType {
+  PROPERTY
+  NAUTICAL
+}
+
+// Enum para temporadas
+enum SeasonType {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+// Enum para status de uso
+enum UseStatus {
+  CONFIRMED
+  AVAILABLE_FOR_RENT
+  RENTED
+  CANCELLED
+}
+
+// Modelo de Usuário (User)
 model User {
-  id            String   @id @default(uuid())
+  id            String          @id @default(uuid())
   name          String
-  email         String   @unique
+  email         String          @unique
   password_hash String
-  created_at    DateTime @default(now())
+  role          String          @default("USER") // USER ou ADMIN
+  is_active     Boolean         @default(true)
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  shares        SharesOnUsers[]
+  rentals       Rental[]
 
   @@map("users")
+}
+
+// Modelo de Bem (Asset)
+model Asset {
+  id           String    @id @default(uuid())
+  type         AssetType
+  name         String
+  location     String
+  description  String?
+  total_shares Int // Número total de cotas
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  shares       Share[] // Relação com cotas
+  seasons      Season[]
+
+  @@map("assets")
+}
+
+// Modelo de Cota (Share)
+model Share {
+  id             String          @id @default(uuid())
+  asset_id       String
+  asset          Asset           @relation(fields: [asset_id], references: [id])
+  current_season SeasonType
+  season_order   Int // Para controle da rotação
+  current_year   Int
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
+  users          SharesOnUsers[]
+  uses           Use[] // Relação com usos
+
+  @@map("shares")
+}
+
+// Modelo de Uso (Use)
+model Use {
+  id         String    @id @default(uuid())
+  share_id   String
+  share      Share     @relation(fields: [share_id], references: [id])
+  start_date DateTime
+  end_date   DateTime
+  status     UseStatus
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  rental     Rental? // Relação com locação
+
+  @@map("uses")
+}
+
+// Modelo de Locação (Rental)
+model Rental {
+  id         String   @id @default(uuid())
+  use_id     String   @unique
+  use        Use      @relation(fields: [use_id], references: [id])
+  tenant_id  String
+  tenant     User     @relation(fields: [tenant_id], references: [id])
+  price      Float
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("rentals")
+}
+
+model SharesOnUsers {
+  user_id    String
+  share_id   String
+  user       User     @relation(fields: [user_id], references: [id])
+  share      Share    @relation(fields: [share_id], references: [id])
+  created_at DateTime @default(now())
+
+  @@id([user_id, share_id])
+  @@map("shares_users")
+}
+
+model Season {
+  id         String     @id @default(uuid())
+  asset_id   String
+  asset      Asset      @relation(fields: [asset_id], references: [id])
+  type       SeasonType
+  start_date DateTime
+  end_date   DateTime
+  year       Int
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  @@map("seasons")
 }

@@ -1,14 +1,20 @@
 {
-  "name": "api_monitor",
+  "name": "share-stay",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsx watch src/server.ts",
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run --dir src/use-cases",
+    "test:watch": "vitest --dir src/use-cases",
+    "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
+    "test:install-prisma-environment": "npm link vitest-environment-prisma",
+    "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
+    "test:e2e": "vitest run --dir src/http",
+    "test:e2e:watch": "vitest --dir src/http",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },
@@ -19,22 +25,26 @@
     "@rocketseat/eslint-config": "2.1.0",
     "@types/bcryptjs": "2.4.4",
     "@types/node": "20.6.2",
+    "@types/supertest": "6.0.2",
     "@vitest/coverage-v8": "0.34.4",
     "@vitest/ui": "0.34.4",
     "dayjs": "1.11.10",
     "eslint": "8.49.0",
+    "npm-run-all": "4.1.5",
     "prisma": "5.3.1",
+    "supertest": "6.3.4",
     "tsup": "7.2.0",
-    "tsx": "3.12.10",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "vitest": "0.33.0"
   },
   "dependencies": {
+    "@fastify/jwt": "^8.0.0",
     "@prisma/client": "5.3.1",
     "bcryptjs": "2.4.3",
     "dotenv": "16.3.1",
     "fastify": "4.23.2",
+    "tsx": "^4.19.3",
     "vite-tsconfig-paths": "4.2.1",
-    "vitest": "0.34.4",
-    "zod": "3.22.2"
+    "zod": "3.22.4"
   }
 }

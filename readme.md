@@ -1,46 +1,84 @@
-### **Requisitos Funcionais “RF’s”:**
+# Share Stay - Sistema de Compartilhamento de Bens
 
-1. **Coleta de Dados:**
-    - Integração com APIs de várias exchanges para obter dados em tempo real sobre preços, volumes e ordens de compra/venda.
-2. **Análise de Oportunidades de Arbitragem:**
-    - Desenvolvimento de algoritmos para identificar oportunidades de arbitragem com base nos dados coletados.
-    - Análise de spreads entre diferentes exchanges.
-3. **Monitoramento em Tempo Real:**
-    - Painel de controle para monitoramento em tempo real das operações de arbitragem.
-    - Alertas automáticos para eventos críticos.
-4. **Relatórios e Histórico:**
-    - Geração de relatórios detalhados sobre as operações de arbitragem realizadas.
-    - Armazenamento histórico de dados para análises retrospectivas.
-5. **Execução de Ordens:**
-    - Implementação de mecanismos de execução de ordens automáticas para aproveitar as oportunidades de arbitragem identificadas.
-6. **Integração com Carteiras Digitais:**
-    - Integração com carteiras digitais para realizar transferências de ativos entre exchanges.
+### **Requisitos Funcionais "RF's":**
 
-### **Requisitos Não Funcionais “RNF’s”:**
+1. **Gestão de Bens:**
+    - [RF01] Deve ser possível cadastrar um bem (imóvel ou náutico)
+    - [RF02] Deve ser possível definir o número total de cotas para cada bem
+    - [RF03] Deve ser possível visualizar todos os bens cadastrados
+    - [RF04] Deve ser possível atualizar informações do bem
+    - [RF05] Deve ser possível remover um bem do sistema
 
-1. **Desempenho:**
-    - Alta velocidade de processamento para aproveitar oportunidades de arbitragem em tempo real.
-    - Baixa latência nas comunicações com as exchanges.
-2. **Segurança:**
-    - Implementação de protocolos de segurança robustos para proteger dados sensíveis e transações.
-    - Autenticação de dois fatores para acesso ao sistema.
-3. **Confiabilidade:**
-    - Implementação de backups regulares para evitar perda de dados.
-    - Mecanismos de recuperação de falhas para garantir a continuidade do sistema.
-4. **Compatibilidade:**
-    - Compatibilidade com uma ampla variedade de exchanges e ativos digitais.
+2. **Gestão de Cotas:**
+    - [RF06] Deve ser possível criar cotas para um bem específico
+    - [RF07] Deve ser possível associar múltiplos usuários a uma cota
+    - [RF08] Deve ser possível visualizar todas as cotas de um bem
+    - [RF09] Deve ser possível transferir cotas entre usuários
+    - [RF10] Deve ser possível consultar o histórico de propriedade de uma cota
 
-### **Regras de Negócio “RN’s”:**
+3. **Gestão de Temporadas:**
+    - [RF11] Deve ser possível definir períodos de temporada (alta, média, baixa)
+    - [RF12] Deve ser possível visualizar a distribuição de temporadas do ano
+    - [RF13] O sistema deve realizar automaticamente a rotação de temporadas ao final do ano
+    - [RF14] Deve ser possível consultar o histórico de temporadas de uma cota
 
-1. **Conformidade Regulatória:**
-    - Garantir conformidade com as regulamentações locais relacionadas a criptoativos e arbitragem.
-2. **Limites de Negociação:**
-    - Estabelecer limites para o tamanho das transações com base nos recursos disponíveis e na tolerância ao risco.
-3. **Taxas e Custos:**
-    - Levar em consideração as taxas de transação, saque e outras associadas às exchanges ao calcular a viabilidade de uma arbitragem.
-4. **Gestão de Riscos:**
-    - Implementação de estratégias para gerenciar riscos, como stop-loss automáticos e limites de perda.
-5. **Atualizações de Mercado:**
-    - Manutenção regular para adaptar o sistema a mudanças nas condições do mercado e nas APIs das exchanges.
-6. **Transparência:**
-    - Fornecer informações transparentes aos usuários sobre as operações realizadas e os resultados obtidos.
+4. **Gestão de Uso:**
+    - [RF15] Deve ser possível reservar períodos de uso do bem
+    - [RF16] Deve ser possível confirmar ou declinar o uso de uma cota
+    - [RF17] O sistema deve notificar usuários sobre prazos de confirmação de uso
+    - [RF18] Deve ser possível visualizar o calendário de uso do bem
+    - [RF19] Deve ser possível cancelar uma reserva dentro do prazo estabelecido
+
+5. **Gestão de Locações:**
+    - [RF20] Deve ser possível disponibilizar uma cota para locação
+    - [RF21] Deve ser possível registrar uma locação para uma cota disponível
+    - [RF22] O sistema deve calcular automaticamente os valores de locação
+    - [RF23] Deve ser possível visualizar o histórico de locações
+    - [RF24] Deve ser possível gerar relatórios financeiros de locações
+
+6. **Gestão de Usuários:**
+    - [RF25] Deve ser possível cadastrar novos usuários
+    - [RF26] Deve ser possível autenticar usuários no sistema
+    - [RF27] Deve ser possível recuperar senha
+    - [RF28] Deve ser possível atualizar dados do perfil
+    - [RF29] Deve ser possível visualizar histórico de atividades do usuário
+
+### **Requisitos Não Funcionais "RNF's":**
+
+1. **Segurança:**
+    - [RNF01] O sistema deve utilizar JWT para autenticação
+    - [RNF02] As senhas devem ser armazenadas de forma criptografada
+    - [RNF03] O sistema deve ter proteção contra ataques comuns (SQL Injection, XSS)
+
+2. **Performance:**
+    - [RNF04] O sistema deve responder a requisições em menos de 1 segundo
+    - [RNF05] O sistema deve suportar múltiplos usuários simultâneos
+    - [RNF06] O sistema deve ter alta disponibilidade (99.9% uptime)
+
+3. **Usabilidade:**
+    - [RNF07] O sistema deve ser responsivo
+    - [RNF08] O sistema deve ter interface intuitiva
+    - [RNF09] O sistema deve ter documentação clara para usuários
+
+### **Regras de Negócio "RN's":**
+
+1. **Cotas:**
+    - [RN01] Uma cota não pode ser vendida se estiver com uso agendado
+    - [RN02] Uma cota pode ter múltiplos proprietários
+    - [RN03] O total de cotas de um bem deve ser definido no cadastro
+
+2. **Temporadas:**
+    - [RN04] Um usuário não pode ter alta temporada em anos consecutivos
+    - [RN05] A rotação de temporadas deve seguir a ordem: alta → média → baixa → alta
+    - [RN06] As datas de cada temporada devem ser configuráveis por bem
+
+3. **Uso e Locação:**
+    - [RN07] O prazo mínimo para confirmação de uso é de 60 dias
+    - [RN08] Cotas não confirmadas podem ser disponibilizadas para locação
+    - [RN09] O proprietário deve receber 70% do valor da locação
+    - [RN10] Cancelamentos com menos de 30 dias podem ter multa
+
+4. **Usuários:**
+    - [RN11] Um usuário pode ter cotas em múltiplos bens
+    - [RN12] A transferência de cotas requer aprovação do administrador
+    - [RN13] Usuários inadimplentes não podem fazer reservas

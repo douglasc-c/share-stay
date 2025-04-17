@@ -1,9 +1,11 @@
 import { FastifyInstance } from 'fastify'
-import { register } from './controllers/register'
-import { authenticate } from './controllers/authticate'
+
+import { usersRoutes } from './controllers/users/routes'
+import { assetsRoutes } from './controllers/assets/routes'
+import { sharesRoutes } from './controllers/shares/routes'  
 
 export async function appRoutes(app: FastifyInstance) {
-  app.post('/users', register)
-
-  app.post('/sessions', authenticate)
+  app.register(usersRoutes)
+  app.register(assetsRoutes)
+  app.register(sharesRoutes)
 }

@@ -3,11 +3,11 @@
 version: '3'
 
 services:
-  solid:
+  share-stay:
     image: bitnami/postgresql
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=solid
+      - POSTGRESQL_DATABASE=share-stay
