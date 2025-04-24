@@ -1,5 +1,6 @@
 import { UsersRepository } from '@/repositories/users-repository'
-import { User } from '@prisma/client'
+import { AddressesRepository } from '@/repositories/addresses-repository'
+import { User, Address } from '@prisma/client'
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 
 interface GetUserProfileUseCaseRequest {
@@ -8,10 +9,14 @@ interface GetUserProfileUseCaseRequest {
 
 interface GetUserProfileUseCaseResponse {
   user: User
+  address: Address | null
 }
 
 export class GetUserProfileUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private addressesRepository: AddressesRepository,
+  ) {}
 
   async execute({
     userId,
@@ -22,8 +27,11 @@ export class GetUserProfileUseCase {
       throw new ResourceNotFoundError()
     }
 
+    const address = await this.addressesRepository.findByUserId(userId)
+
     return {
       user,
+      address,
     }
   }
 }

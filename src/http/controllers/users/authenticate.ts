@@ -7,7 +7,10 @@ type AuthenticateReply = FastifyReply & {
   setCookie: (name: string, value: string, options: any) => FastifyReply
 }
 
-export async function authenticate(request: FastifyRequest, reply: AuthenticateReply) {
+export async function authenticate(
+  request: FastifyRequest,
+  reply: AuthenticateReply,
+) {
   const authenticateBodySchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
@@ -56,6 +59,10 @@ export async function authenticate(request: FastifyRequest, reply: AuthenticateR
       .status(200)
       .send({
         token,
+        user: {
+          ...user,
+          password_hash: undefined,
+        },
       })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {

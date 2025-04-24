@@ -15,7 +15,16 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     role: z.enum(['USER', 'ADMIN']),
   })
 
-  const { firstName, lastName, email, password, document_type, document_number, phone, role } = registerBodySchema.parse(request.body)
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    document_type,
+    document_number,
+    phone,
+    role,
+  } = registerBodySchema.parse(request.body)
 
   try {
     const registerUseCase = makeRegisterUseCase()

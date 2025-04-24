@@ -1,14 +1,14 @@
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 import { PrismaAddressesRepository } from '@/repositories/prisma/prisma-addresses-repository'
-import { GetUserProfileUseCase } from '@/use-cases/users/get-user-profile'
+import { AddUserAddressUseCase } from '@/use-cases/users/add-user-address'
 
-export function makeGetUserProfileUseCase() {
+export function makeAddUserAddressUseCase() {
   const usersRepository = new PrismaUsersRepository()
   const addressesRepository = new PrismaAddressesRepository()
-  const getUserProfileUseCase = new GetUserProfileUseCase(
+  const addUserAddressUseCase = new AddUserAddressUseCase(
     usersRepository,
     addressesRepository,
   )
 
-  return getUserProfileUseCase
+  return addUserAddressUseCase
 }
