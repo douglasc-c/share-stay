@@ -70,4 +70,12 @@ export class PrismaSharesRepository implements SharesRepository {
 
     return share
   }
-} 
+
+  async delete(id: string): Promise<void> {
+    await prisma.share.delete({
+      where: {
+        id,
+      },
+    })
+  }
+}

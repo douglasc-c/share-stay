@@ -8,4 +8,5 @@ export interface SharesRepository {
   findMany(): Promise<Share[]>
   countByAssetId(assetId: string): Promise<number>
   update(id: string, data: Prisma.ShareUpdateInput): Promise<Share>
-} 
+  delete(id: string): Promise<void>
+}
